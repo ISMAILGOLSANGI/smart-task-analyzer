@@ -2,6 +2,14 @@
 
 A Django-based task management system that intelligently scores and prioritizes tasks based on urgency, importance, effort, and dependencies.
 
+##  Application Screenshots
+
+### Smart Dashboard & Scoring Logic
+![Dashboard View](dashboard.png)
+
+### Bulk JSON Input Feature
+![Input View](bulk_input.png)
+
 ## Setup Instructions
 
 1. **Clone the repository** (or extract the project folder).
@@ -81,3 +89,4 @@ Unit Tests: Implemented comprehensive unit tests in tasks/tests.py to verify the
 
 
 Frontend Polish: Enhanced the UI with a clean, modern design, visual priority indicators, and loading states for better UX.
+
