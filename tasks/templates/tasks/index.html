@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 850px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #111827;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 2rem;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 30px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .input-group { margin-bottom: 15px; }
+        
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #374151;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn-add {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover { background-color: var(--primary-hover); }
+
+        /* Bulk Input */
+        .bulk-section {
+            margin-top: 15px;
+            border-top: 1px dashed #d1d5db;
+            padding-top: 15px;
+        }
+        summary { cursor: pointer; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
+        .btn-bulk { background: #6b7280; color: white; padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.85rem; margin-top: 8px;}
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .sort-btn {
+            background: white;
+            border: 1px solid #d1d5db;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .sort-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        /* Task Cards */
+        .task-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Priority Colors */
+        .priority-high { border-left: 6px solid var(--danger); }
+        .priority-med { border-left: 6px solid var(--warning); }
+        .priority-low { border-left: 6px solid var(--success); }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .task-title { font-size: 1.15rem; font-weight: 700; color: #111827; }
+        
+        .task-score {
+            background: #111827;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .explanation-box {
+            background: #eff6ff;
+            color: #1e40af;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .explanation-icon { font-size: 1.2rem; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Smart Task Analyzer</h1>
+
+    <div class="input-section">
+        <div class="input-group">
+            <label>Task Title</label>
+            <input type="text" id="title" placeholder="e.g., Fix Critical Security Bug">
+        </div>
+        
+        <div class="input-row">
+            <div>
+                <label>Due Date</label>
+                <input type="date" id="dueDate">
+            </div>
+            <div>
+                <label>Estimated Hours</label>
+                <input type="number" id="hours" placeholder="e.g., 2">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Importance (1-10)</label>
+            <input type="number" id="importance" min="1" max="10" placeholder="5">
+        </div>
+
+        <button class="btn-add" onclick="addTask()">Add Task to Queue</button>
+
+        <details class="bulk-section">
+            <summary>Or Paste JSON (Bulk Input)</summary>
+            <textarea id="jsonInput" placeholder='[{"title": "Task A", "due_date": "2025-12-01", "importance": 8, "estimated_hours": 2}]'></textarea>
+            <button class="btn-bulk" onclick="loadJson()">Load JSON</button>
+        </details>
+    </div>
+
+    <div class="controls">
+        <button class="sort-btn" onclick="analyzeTasks('smart')">✨ Smart Balance</button>
+        <button class="sort-btn" onclick="analyzeTasks('urgent')">📅 Deadline Driven</button>
+        <button class="sort-btn" onclick="analyzeTasks('effort')">⚡ Fastest Wins</button>
+        <button class="sort-btn" onclick="analyzeTasks('impact')">🚀 High Impact</button>
+    </div>
+
+    <div id="taskList"></div>
+</div>
+
+<script>
+    let tasks = [];
+
+    function addTask() {
+        const title = document.getElementById('title').value;
+        const due = document.getElementById('dueDate').value;
+        const hours = document.getElementById('hours').value;
+        const imp = document.getElementById('importance').value;
+
+        if (!title || !due) { alert("Please fill in Title and Due Date"); return; }
+
+        tasks.push({
+            "title": title,
+            "due_date": due,
+            "estimated_hours": parseInt(hours) || 0,
+            "importance": parseInt(imp) || 5,
+            "dependencies": "" 
+        });
+        
+        // Visual feedback
+        const btn = document.querySelector('.btn-add');
+        const originalText = btn.innerText;
+        btn.innerText = "Task Added!";
+        btn.style.background = "#10b981";
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.background = "";
+        }, 1000);
+        
+        document.getElementById('title').value = '';
+    }
+
+    function loadJson() {
+        const raw = document.getElementById('jsonInput').value;
+        try {
+            const parsed = JSON.parse(raw);
+            if (!Array.isArray(parsed)) throw new Error("JSON must be an array []");
+            tasks = tasks.concat(parsed);
+            alert(`Loaded ${parsed.length} tasks!`);
+            document.getElementById('jsonInput').value = '';
+        } catch (e) {
+            alert("Invalid JSON: " + e.message);
+        }
+    }
+
+    async function analyzeTasks(strategy) {
+        // Loading State
+        const btn = event.target; 
+        const originalText = btn.innerText;
+        btn.innerText = "Processing...";
+        btn.style.opacity = "0.7";
+
+        try {
+            const response = await fetch('/api/tasks/analyze/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tasks: tasks })
+            });
+            const data = await response.json();
+            renderTasks(data.tasks, strategy);
+        } catch (error) {
+            console.error(error);
+            alert("Error connecting to server.");
+        } finally {
+            btn.innerText = originalText;
+            btn.style.opacity = "1";
+        }
+    }
+
+    function renderTasks(taskList, strategy) {
+        const container = document.getElementById('taskList');
+        container.innerHTML = ''; 
+
+        // Sorting Logic
+        if (strategy === 'urgent') taskList.sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
+        else if (strategy === 'effort') taskList.sort((a, b) => a.estimated_hours - b.estimated_hours);
+        else if (strategy === 'impact') taskList.sort((a, b) => b.importance - a.importance);
+
+        taskList.forEach(task => {
+            let priorityClass = 'priority-low';
+            if (task.priority_score > 80) priorityClass = 'priority-high';
+            else if (task.priority_score > 40) priorityClass = 'priority-med';
+
+            const html = `
+                <div class="task-card ${priorityClass}">
+                    <div class="task-header">
+                        <div class="task-title">${task.title}</div>
+                        <div class="task-score">${task.priority_score}</div>
+                    </div>
+                    <div class="task-meta">
+                        <span>📅 Due: ${task.due_date}</span>
+                        <span>⏱ ${task.estimated_hours}h</span>
+                        <span>⭐ Imp: ${task.importance}</span>
+                    </div>
+                    <div class="explanation-box">
+                        <span class="explanation-icon">💡</span>
+                        <span>${task.explanation}</span>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+    }
+</script>
+</body>
+</html>
