@@ -15,15 +15,20 @@ A Django-based task management system that intelligently scores and prioritizes 
    source venv/bin/activate
 
 3. **Install dependencies**
+   ```bash
    pip install -r requirements.txt
 
 4. **Initialize the Database**
+   ```bash
    python manage.py migrate
 
 5. **Start the Server**
+   ```bash
    python manage.py runserver
 
-6. Open your browser at http://127.0.0.1:8000/.
+6. Open your browser at
+    ```bash
+   http://127.0.0.1:8000/.
 
 ## Algorithm Explanation
 The core priority algorithm (tasks/scoring.py) calculates a numerical score for each task based on four weighted factors. Higher scores indicate higher priority.
@@ -73,5 +78,6 @@ Reasoning: I prioritized code readability and a robust scoring algorithm over co
 Date Intelligence: The algorithm calculates Business Days (excluding weekends). A task due on Monday is treated as "Urgent" on the preceding Friday.
 
 Unit Tests: Implemented comprehensive unit tests in tasks/tests.py to verify the scoring logic.
+
 
 Frontend Polish: Enhanced the UI with a clean, modern design, visual priority indicators, and loading states for better UX.
